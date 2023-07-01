@@ -1,0 +1,48 @@
+#!/usr/bin/python3
+
+import sys
+import time
+
+
+def factorize(num):
+    """
+    Factorizes a given number into its prime factors.
+
+    Args:
+        num (int): The number to be factorized.
+
+    Returns:
+        tuple: A tuple containing the two prime factors of the number, or None if it is prime.
+    """
+    for i in range(2, int(num**0.5) + 1):
+        if num % i == 0:
+            return (num//i, i)
+    return None
+
+
+if __name__ == "__main__":
+    """
+    Main entry point of the program.
+    """
+    if len(sys.argv) != 2:
+        print("Usage: factors <file>")
+        sys.exit(1)
+
+    try:
+        with open(sys.argv[1], 'r') as file:
+            lines = file.readlines()
+    except FileNotFoundError:
+        print("File not found")
+        sys.exit(1)
+
+    start_time = time.time()
+
+    for line in lines:
+        num = int(line.strip())
+        factors = factorize(num)
+        if factors:
+            print(f"{num} = {factors[1]} * {factors[0]}")
+
+        if time.time() - start_time > 5:
+            print("Time limit exceeded")
+            sys.exit(0)
